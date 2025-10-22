@@ -216,13 +216,3 @@ npm run dev
 
 3. Test using Postman or PowerShell Invoke-RestMethod (see earlier examples in this doc).
 
-## Next steps / Improvements
-- Add authentication (JWT) and protect endpoints
-- Replace simple validation with Joi schemas
-- Add OpenAPI/Swagger documentation and/or Postman collection export
-- Add tests (Jest or similar) for endpoints
-- Use migrations/seeds for reproducible data
-
----
-
-If you want, I can also generate a Postman collection or OpenAPI spec from these endpoints. Tell me which format you prefer.
