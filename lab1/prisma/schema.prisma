@@ -15,9 +15,50 @@ model User {
   role      String   @default("user")
   createdAt DateTime @default(now())
 
-  cards              Card[] // карти, якими володіє користувач
+  cards              Card[]        // карти, якими володіє користувач
+  collections        Collection[]   // колекції користувача
   boughtTransactions Transaction[] @relation("Buyer") // транзакції, де користувач покупець
   soldTransactions   Transaction[] @relation("Seller") // транзакції, де користувач продавець
+}
+
+model Collection {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  isPublic    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  userId      Int
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cards Card[] @relation("CollectionToCard")
+}
+
+model Card {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  rarity      String
+  imageUrl    String?
+  ownerId     Int
+  createdAt   DateTime @default(now())
+
+  owner        User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  collections  Collection[]  @relation("CollectionToCard")
+  transactions Transaction[] // всі транзакції цієї карти
+}
+
+model Transaction {
+
+model Collection {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  isPublic    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  userId      Int
+
+  user  User   @relation(fields: [userId], references: [id])
+  cards Card[] @relation("CollectionToCard")
 }
 
 model Card {
@@ -30,6 +71,7 @@ model Card {
   createdAt   DateTime @default(now())
 
   owner        User          @relation(fields: [ownerId], references: [id])
+  collections  Collection[]  @relation("CollectionToCard")
   transactions Transaction[] // всі транзакції цієї карти
 }
 

@@ -1,0 +1,414 @@
+{
+	"info": {
+		"name": "Lab1 API Collection - CRUD Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/users",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["users"]
+						}
+					}
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:3000/users",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["users"]
+						}
+					}
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:3000/users/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["users", "1"]
+						}
+					}
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"updateduser\",\n    \"email\": \"updated@example.com\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["users", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "http://localhost:3000/users/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["users", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Cards",
+			"item": [
+				{
+					"name": "Create Card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Blue Dragon\",\n    \"description\": \"Rare dragon card\",\n    \"rarity\": \"legendary\",\n    \"ownerId\": 1,\n    \"imageUrl\": \"https://example.com/blue-dragon.png\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/cards",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["cards"]
+						}
+					}
+				},
+				{
+					"name": "Get All Cards",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:3000/cards",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["cards"]
+						}
+					}
+				},
+				{
+					"name": "Get Card by ID",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:3000/cards/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["cards", "1"]
+						}
+					}
+				},
+				{
+					"name": "Update Card",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Dragon\",\n    \"description\": \"Updated description\",\n    \"rarity\": \"mythical\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/cards/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["cards", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete Card",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "http://localhost:3000/cards/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["cards", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Collections",
+			"item": [
+				{
+					"name": "Create Collection",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Rare Dragons\",\n    \"description\": \"My collection of rare dragon cards\",\n    \"userId\": 1,\n    \"isPublic\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/collections",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["collections"]
+						}
+					}
+				},
+				{
+					"name": "Get All Collections",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:3000/collections",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["collections"]
+						}
+					}
+				},
+				{
+					"name": "Get Collection by ID",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:3000/collections/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["collections", "1"]
+						}
+					}
+				},
+				{
+					"name": "Add Card to Collection",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cardId\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/collections/1/cards",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["collections", "1", "cards"]
+						}
+					}
+				},
+				{
+					"name": "Update Collection",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Collection\",\n    \"description\": \"Updated collection description\",\n    \"isPublic\": false\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/collections/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["collections", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete Collection",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "http://localhost:3000/collections/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["collections", "1"]
+						}
+					}
+				},
+				{
+					"name": "Remove Card from Collection",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cardId\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/collections/1/cards",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["collections", "1", "cards"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Create Transaction",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerId\": 2,\n    \"sellerId\": 1,\n    \"cardId\": 1,\n    \"price\": 99.99\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/transactions",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["transactions"]
+						}
+					}
+				},
+				{
+					"name": "Get All Transactions",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:3000/transactions",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["transactions"]
+						}
+					}
+				},
+				{
+					"name": "Get Transaction by ID",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:3000/transactions/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["transactions", "1"]
+						}
+					}
+				},
+				{
+					"name": "Update Transaction",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"price\": 149.99\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/transactions/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["transactions", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete Transaction",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "http://localhost:3000/transactions/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["transactions", "1"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

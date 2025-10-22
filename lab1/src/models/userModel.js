@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 const SALT_ROUNDS = 10;
 
 export const createUser = async ({ email, username, password }) => {
-  // Basic pre-checks
   if (!email || !username || !password) throw new Error('email, username and password are required');
 
   const existing = await prisma.user.findFirst({
@@ -64,6 +63,32 @@ export const updateUser = async (id, data) => {
 };
 
 export const deleteUser = async (id) => {
-  await prisma.user.delete({ where: { id } });
-  return;
+  // Використовуємо транзакцію для атомарного видалення
+  return await prisma.$transaction(async (prisma) => {
+    // Спочатку видаляємо всі пов'язані записи
+    await prisma.transaction.deleteMany({
+      where: {
+        OR: [
+          { buyerId: id },
+          { sellerId: id }
+        ]
+      }
+    });
+
+    // Видаляємо картки користувача
+    await prisma.card.deleteMany({
+      where: { ownerId: id }
+    });
+
+    // Видаляємо колекції користувача
+    await prisma.collection.deleteMany({
+      where: { userId: id }
+    });
+
+    // Тепер можемо безпечно видалити користувача
+    await prisma.user.delete({
+      where: { id }
+    });
+    return { success: true };
+  });
 };

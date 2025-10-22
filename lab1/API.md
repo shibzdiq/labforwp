@@ -1,6 +1,13 @@
 # Lab1 API Documentation
 
-This document describes the REST API for the Lab1 project (users, cards, transactions). It includes endpoints, required fields, example requests/responses, error cases, and quick run instructions.
+This document describes the REST API for the Lab1 project. The API provides endpoints for managing users, cards, collections, and transactions in a trading card system.
+
+## Main Entities
+
+1. **Users** - System users who can own cards and participate in transactions
+2. **Cards** - Trading cards that can be owned and traded
+3. **Collections** - Groups of cards organized by users
+4. **Transactions** - Records of card trades between users
 
 Base URL
 
@@ -169,7 +176,116 @@ Errors:
 
 -----------------------------
 
-### 11) Create Transaction
+### 11) Collections
+
+#### Create Collection
+
+- Method: POST
+- URL: `/collections`
+- Required fields (JSON body):
+  - `name` (string)
+  - `userId` (number)
+  - Optional fields:
+    - `description` (string)
+    - `isPublic` (boolean, default: true)
+
+Example request:
+```json
+{
+  "name": "Rare Dragons",
+  "description": "My collection of rare dragon cards",
+  "userId": 1,
+  "isPublic": true
+}
+```
+
+Success response (201):
+```json
+{
+  "id": 1,
+  "name": "Rare Dragons",
+  "description": "My collection of rare dragon cards",
+  "isPublic": true,
+  "userId": 1,
+  "createdAt": "2025-10-22T12:00:00.000Z",
+  "user": {
+    "id": 1,
+    "username": "johndoe"
+  },
+  "cards": []
+}
+```
+
+#### Get All Collections
+
+- Method: GET
+- URL: `/collections`
+
+Returns array of collections with their cards and owners.
+
+#### Get Collection by ID
+
+- Method: GET
+- URL: `/collections/:id`
+
+Returns single collection with its cards and owner.
+
+#### Update Collection
+
+- Method: PUT
+- URL: `/collections/:id`
+- Updatable fields: `name`, `description`, `isPublic`
+
+Example request:
+```json
+{
+  "name": "Updated Collection Name",
+  "isPublic": false
+}
+```
+
+#### Delete Collection
+
+- Method: DELETE
+- URL: `/collections/:id`
+
+#### Add Card to Collection
+
+- Method: POST
+- URL: `/collections/:id/cards`
+- Required fields:
+  - `cardId` (number)
+
+Example request:
+```json
+{
+  "cardId": 1
+}
+```
+
+#### Remove Card from Collection
+
+- Method: DELETE
+- URL: `/collections/:id/cards`
+- Required fields:
+  - `cardId` (number)
+
+Example request:
+```json
+{
+  "cardId": 1
+}
+```
+
+Errors for all collection endpoints:
+- 400 Bad Request: missing required fields or invalid data
+- 404 Not Found: collection or card not found
+- 403 Forbidden: attempting to modify private collection
+- 500 Internal Server Error
+
+-----------------------------
+
+### 12) Create Transaction
 
 - Method: POST
 - URL: `/transactions`
