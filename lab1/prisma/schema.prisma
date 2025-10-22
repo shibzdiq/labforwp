@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+
+  cards              Card[] // карти, якими володіє користувач
+  boughtTransactions Transaction[] @relation("Buyer") // транзакції, де користувач покупець
+  soldTransactions   Transaction[] @relation("Seller") // транзакції, де користувач продавець
+}
+
+model Card {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  rarity      String
+  imageUrl    String?
+  ownerId     Int
+  createdAt   DateTime @default(now())
+
+  owner        User          @relation(fields: [ownerId], references: [id])
+  transactions Transaction[] // всі транзакції цієї карти
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  buyerId   Int
+  sellerId  Int
+  cardId    Int
+  price     Float
+  createdAt DateTime @default(now())
+
+  buyer  User @relation("Buyer", fields: [buyerId], references: [id])
+  seller User @relation("Seller", fields: [sellerId], references: [id])
+  card   Card @relation(fields: [cardId], references: [id])
+}
