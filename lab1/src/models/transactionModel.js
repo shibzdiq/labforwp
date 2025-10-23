@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const createTransaction = async (data) => {
-  // Ensure referenced entities exist to avoid FK constraint violations
   const { buyerId, sellerId, cardId } = data;
   const [buyer, seller, card] = await Promise.all([
     prisma.user.findUnique({ where: { id: buyerId } }),
