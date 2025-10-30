@@ -7,18 +7,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  USER
+  MODERATOR
+  ADMIN
+}
+
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
-  email     String   @unique
-  password  String
-  role      String   @default("user")
-  createdAt DateTime @default(now())
+  id             Int       @id @default(autoincrement())
+  username       String    @unique
+  email          String    @unique
+  password       String
+  role           UserRole  @default(USER)
+  refreshToken   String?
+  avatar         String?
+  lastLogin      DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
   cards              Card[]        // карти, якими володіє користувач
   collections        Collection[]   // колекції користувача
   boughtTransactions Transaction[] @relation("Buyer") // транзакції, де користувач покупець
   soldTransactions   Transaction[] @relation("Seller") // транзакції, де користувач продавець
+  uploadedFiles      File[]        // завантажені користувачем файли
+}
+
+model File {
+  id           Int      @id @default(autoincrement())
+  filename     String   // Згенерована назва файлу
+  originalName String   // Оригінальна назва файлу
+  mimetype     String   // Тип файлу (image/jpeg, etc.)
+  size         Int      // Розмір в байтах
+  path         String   // Шлях до файлу
+  uploadedBy   Int      // ID користувача, який завантажив
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [uploadedBy], references: [id], onDelete: Cascade)
 }
 
 model Collection {
