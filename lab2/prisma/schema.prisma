@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  username       String    @unique
+  email          String    @unique
+  password       String
+  role           UserRole  @default(USER)
+  refreshToken   String?
+  avatar         String?
+  lastLogin      DateTime?
+  passwordResetToken String?
+  passwordResetExpires DateTime?
+  totpSecret     String?
+  is2faEnabled   Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  cards              Card[]        // карти, якими володіє користувач
+  collections        Collection[]  // колекції користувача
+  boughtTransactions Transaction[] @relation("Buyer") // транзакції, де користувач покупець
+  soldTransactions   Transaction[] @relation("Seller") // транзакції, де користувач продавець
+  uploadedFiles      File[]       // завантажені користувачем файли
+  auditLogs         Audit[]
+  userPermissions    UserPermission[]
+}
+
+model File {
+  id           Int      @id @default(autoincrement())
+  filename     String   // Згенерована назва файлу
+  originalName String   // Оригінальна назва файлу
+  mimetype     String   // Тип файлу (image/jpeg, etc.)
+  size         Int      // Розмір в байтах
+  path         String   // Шлях до файлу
+  uploadedBy   Int      // ID користувача, який завантажив
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [uploadedBy], references: [id], onDelete: Cascade)
+}
+
+model Collection {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  isPublic    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  userId      Int
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cards Card[] @relation("CollectionToCard")
+}
+
+model Card {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  rarity      String
+  imageUrl    String?
+  ownerId     Int
+  createdAt   DateTime @default(now())
+
+  owner        User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  collections  Collection[]  @relation("CollectionToCard")
+  transactions Transaction[] // всі транзакції цієї карти
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  buyerId   Int
+  sellerId  Int
+  cardId    Int
+  price     Float
+  createdAt DateTime @default(now())
+
+  buyer  User @relation("Buyer", fields: [buyerId], references: [id], onDelete: Cascade)
+  seller User @relation("Seller", fields: [sellerId], references: [id], onDelete: Cascade)
+  card   Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
+
+model Audit {
+  id          Int      @id @default(autoincrement())
+  userId      Int?
+  action      String
+  resource    String?
+  resourceId  Int?
+  ip          String?
+  userAgent   String?
+  timestamp   DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model Permission {
+  id        Int    @id @default(autoincrement())
+  name      String @unique
+  users     UserPermission[]
+}
+
+model UserPermission {
+  id           Int    @id @default(autoincrement())
+  userId       Int
+  permissionId Int
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission  Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+}
